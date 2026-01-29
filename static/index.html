@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini File Generator | Test Assets Made Easy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dark-theme">
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    
+    <main class="app-container">
+        <header>
+            <h1 class="glow-text">Gemini File Genie</h1>
+            <p class="subtitle">Generate realistic test files with AI-powered content in seconds.</p>
+        </header>
+
+        <section class="generator-card">
+            <div class="input-group">
+                <label for="prompt">What do you need?</label>
+                <textarea id="prompt" placeholder="e.g. A 3-sheet Excel with realistic customer data for a retail bank..."></textarea>
+            </div>
+
+            <div class="options-grid">
+                <div class="file-type-selector">
+                    <label>File Format</label>
+                    <div class="type-chips">
+                        <button class="chip active" data-type="pdf">PDF Document</button>
+                        <button class="chip" data-type="excel">Excel Sheet</button>
+                        <button class="chip" data-type="image">PNG Image</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="generate-btn" class="primary-btn">
+                <span class="btn-text">Generate Asset</span>
+                <span class="loader hidden"></span>
+            </button>
+        </section>
+
+        <section id="results" class="hidden">
+            <div class="success-message">
+                <div class="icon-check">✓</div>
+                <h3>File Ready!</h3>
+                <p id="file-info">Your test document has been generated.</p>
+                <a id="download-link" class="secondary-btn">Download Now</a>
+            </div>
+        </section>
+        
+        <footer class="glass-footer">
+            <p>Powered by Google Gemini 1.5 Flash</p>
+        </footer>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
