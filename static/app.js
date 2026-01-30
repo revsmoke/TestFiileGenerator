@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const promptInput = document.getElementById('prompt');
     const resultsSection = document.getElementById('results');
+    const errorSection = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
     const downloadLink = document.getElementById('download-link');
     const loader = document.querySelector('.loader');
     const btnText = document.querySelector('.btn-text');
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.classList.remove('hidden');
         btnText.classList.add('hidden');
         resultsSection.classList.add('hidden');
+        errorSection.classList.add('hidden');
 
         try {
             const response = await fetch('/generate', {
@@ -43,8 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Failed to generate file');
+                let errorMsg = 'Failed to generate file';
+                try {
+                    const errorData = await response.json();
+                    errorMsg = errorData.detail || errorMsg;
+                } catch (e) {
+                    errorMsg = await response.text() || errorMsg;
+                }
+                throw new Error(errorMsg);
             }
 
             const blob = await response.blob();
@@ -61,7 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error(error);
-            alert('Error: ' + error.message);
+            errorText.textContent = error.message;
+            errorSection.classList.remove('hidden');
+            errorSection.scrollIntoView({ behavior: 'smooth' });
         } finally {
             generateBtn.disabled = false;
             loader.classList.add('hidden');

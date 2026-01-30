@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body class="dark-theme">
     <div class="background-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
     </div>
-    
+
     <main class="app-container">
         <header>
             <h1 class="glow-text">Gemini File Genie</h1>
@@ -25,7 +27,8 @@
         <section class="generator-card">
             <div class="input-group">
                 <label for="prompt">What do you need?</label>
-                <textarea id="prompt" placeholder="e.g. A 3-sheet Excel with realistic customer data for a retail bank..."></textarea>
+                <textarea id="prompt"
+                    placeholder="e.g. A 3-sheet Excel with realistic customer data for a retail bank..."></textarea>
             </div>
 
             <div class="options-grid">
@@ -45,6 +48,14 @@
             </button>
         </section>
 
+        <section id="error-message" class="hidden">
+            <div class="error-card">
+                <div class="icon-error">!</div>
+                <h3>Generation Failed</h3>
+                <p id="error-text">Something went wrong. Please try again.</p>
+            </div>
+        </section>
+
         <section id="results" class="hidden">
             <div class="success-message">
                 <div class="icon-check">✓</div>
@@ -53,7 +64,7 @@
                 <a id="download-link" class="secondary-btn">Download Now</a>
             </div>
         </section>
-        
+
         <footer class="glass-footer">
             <p>Powered by Google Gemini 1.5 Flash</p>
         </footer>
@@ -61,4 +72,5 @@
 
     <script src="/static/app.js"></script>
 </body>
+
 </html>

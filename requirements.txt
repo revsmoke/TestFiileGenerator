@@ -7,3 +7,7 @@ openpyxl
 pillow
 python-dotenv
 python-multipart
+pytest
+pytest-asyncio
+pytest-mock
+httpx

@@ -22,6 +22,10 @@ class GenerateRequest(BaseModel):
 
 @app.post("/generate")
 async def generate_file(req: GenerateRequest):
+    supported_types = ["pdf", "excel", "xlsx", "image"]
+    if req.file_type not in supported_types:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+        
     data = await gemini.generate_test_data(req.file_type, req.prompt)
     
     if "error" in data:

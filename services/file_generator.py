@@ -45,24 +45,35 @@ def generate_excel(data: dict) -> io.BytesIO:
     return buffer
 
 def generate_image(data: dict) -> io.BytesIO:
+    print(f"Generating image with {len(data.get('elements', []))} elements")
     # 800x600 default
     img = Image.new('RGB', (800, 600), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
     
-    # Fill colors or just draw elements
-    for element in data.get("elements", []):
+    # Limit to 100 elements to prevent accidental OOM or slowness
+    elements = data.get("elements", [])[:100]
+    
+    for element in elements:
         etype = element.get("type")
         pos = element.get("pos", [50, 50])
         color = element.get("color", "black")
         
-        if etype == "text":
-            draw.text((pos[0], pos[1]), element.get("text", "Test"), fill=color)
-        elif etype == "rect":
-            draw.rectangle([pos[0], pos[1], pos[0]+100, pos[1]+100], outline=color, fill=color)
-        elif etype == "circle":
-            draw.ellipse([pos[0], pos[1], pos[0]+100, pos[1]+100], outline=color, fill=color)
+        # Ensure pos is a list of two numbers
+        if not isinstance(pos, (list, tuple)) or len(pos) < 2:
+            pos = [50, 50]
+        
+        try:
+            if etype == "text":
+                draw.text((pos[0], pos[1]), str(element.get("text", "Test")), fill=color)
+            elif etype == "rect":
+                draw.rectangle([pos[0], pos[1], pos[0]+100, pos[1]+100], outline=color, fill=color)
+            elif etype == "circle":
+                draw.ellipse([pos[0], pos[1], pos[0]+100, pos[1]+100], outline=color, fill=color)
+        except Exception as e:
+            print(f"Skipping malformed element {etype}: {e}")
             
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
     buffer.seek(0)
+    print("Image generation complete")
     return buffer
