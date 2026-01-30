@@ -12,32 +12,39 @@ TEXT_MODEL = 'gemini-3-pro-preview'
 IMAGE_MODEL = 'gemini-3-pro-image-preview'
 FALLBACK_MODEL = 'gemini-2.0-flash'
 
+PROMPT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "prompts")
+
+def _load_prompt(file_type: str) -> str:
+    """Loads prompt template from markdown file."""
+    path = os.path.join(PROMPT_DIR, f"{file_type}.md")
+    if not os.path.exists(path):
+        # Fallback to general image/text if specific one missing
+        if file_type in ["photo"]:
+            path = os.path.join(PROMPT_DIR, "image.md")
+        else:
+            path = os.path.join(PROMPT_DIR, "pdf.md")
+            
+    with open(path, "r") as f:
+        return f.read()
+
 async def generate_test_data(file_type: str, prompt: str):
     """
     Generates structured data for a specific file type using Gemini.
     """
-    primary_model_name = IMAGE_MODEL if file_type == "image" else TEXT_MODEL
+    primary_model_name = IMAGE_MODEL if file_type in ["image", "photo"] else TEXT_MODEL
+    prompt_template = _load_prompt(file_type)
     
     # Try primary model, then fallback
     for model_name in [primary_model_name, FALLBACK_MODEL]:
-        print(f"Attempting generation with: {model_name}")
+        print(f"Attempting generation with: {model_name} for {file_type}")
         try:
             model = genai.GenerativeModel(model_name)
             
-            system_instruction = f"""
-            You are a test data generator. Your goal is to generate realistic content for a {file_type} file based on the user's prompt.
-            Return only a JSON object.
-            
-            For 'pdf' or 'docx': Provide 'title', 'sections' (list of {{'heading': ..., 'content': ...}}).
-            For 'excel' or 'csv': Provide 'sheets' (list of {{'name': ..., 'rows': [list of dicts]}}).
-            For 'image': Provide 'description', 'colors' (list), 'elements' (list of {{'type': 'text|rect|circle', 'text': ..., 'pos': [x, y], 'color': ...}}).
-            
-            Prompt: {prompt}
-            """
+            full_prompt = f"{prompt_template}\n\nUser Prompt: {prompt}"
             
             # Add a 30s timeout to prevent indefinite stalling
             response = model.generate_content(
-                system_instruction,
+                full_prompt,
                 request_options={"timeout": 30}
             )
             content = response.text.strip()

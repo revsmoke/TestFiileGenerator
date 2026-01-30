@@ -22,7 +22,7 @@ class GenerateRequest(BaseModel):
 
 @app.post("/generate")
 async def generate_file(req: GenerateRequest):
-    supported_types = ["pdf", "excel", "xlsx", "image"]
+    supported_types = ["pdf", "excel", "xlsx", "image", "photo"]
     if req.file_type not in supported_types:
         raise HTTPException(status_code=400, detail="Unsupported file type")
         
@@ -40,7 +40,7 @@ async def generate_file(req: GenerateRequest):
             buffer = generator.generate_excel(data)
             media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             filename = "test.xlsx"
-        elif req.file_type == "image":
+        elif req.file_type in ["image", "photo"]:
             buffer = generator.generate_image(data)
             media_type = "image/png"
             filename = "test.png"

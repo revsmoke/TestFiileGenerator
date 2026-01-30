@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = window.URL.createObjectURL(blob);
 
             // Set up download
-            const ext = selectedType === 'excel' ? 'xlsx' : selectedType === 'image' ? 'png' : 'pdf';
+            const ext = selectedType === 'excel' ? 'xlsx' : (selectedType === 'image' || selectedType === 'photo') ? 'png' : 'pdf';
             downloadLink.href = url;
             downloadLink.download = `test_asset_${Date.now()}.${ext}`;
 
