@@ -299,7 +299,7 @@ textarea:focus {
     transform: scale(1.05);
 }
 
-.footer {
+.glass-footer {
     margin-top: 4rem;
     text-align: center;
     color: var(--text-dim);

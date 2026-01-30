@@ -28,11 +28,16 @@ async def generate_file(req: GenerateRequest):
         
     data = await gemini.generate_test_data(req.file_type, req.prompt)
     
-    if "error" in data:
+    if isinstance(data, dict) and "error" in data:
         raise HTTPException(status_code=500, detail=data["error"])
         
     try:
-        if req.file_type == "pdf":
+        if req.file_type == "photo":
+            # Data is already raw image bytes for 'photo'
+            buffer = io.BytesIO(data)
+            media_type = "image/png"
+            filename = "photo.png"
+        elif req.file_type == "pdf":
             buffer = generator.generate_pdf(data)
             media_type = "application/pdf"
             filename = "test.pdf"
@@ -40,7 +45,8 @@ async def generate_file(req: GenerateRequest):
             buffer = generator.generate_excel(data)
             media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             filename = "test.xlsx"
-        elif req.file_type in ["image", "photo"]:
+        elif req.file_type == "image":
+            # Standard 'image' still uses the geometric synthesizer
             buffer = generator.generate_image(data)
             media_type = "image/png"
             filename = "test.png"

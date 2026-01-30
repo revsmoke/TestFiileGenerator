@@ -35,10 +35,12 @@
                 <div class="file-type-selector">
                     <label>File Format</label>
                     <div class="type-chips">
-                        <button class="chip active" data-type="pdf">PDF Document</button>
-                        <button class="chip" data-type="excel">Excel Sheet</button>
-                        <button class="chip" data-type="image">PNG Image</button>
-                        <button class="chip" data-type="photo">AI Photo</button>
+                        <button class="chip active" data-type="pdf" data-model="gemini-3-pro-preview">PDF
+                            Document</button>
+                        <button class="chip" data-type="excel" data-model="gemini-3-pro-preview">Excel Sheet</button>
+                        <button class="chip" data-type="image" data-model="gemini-3-pro-image-preview">PNG
+                            Image</button>
+                        <button class="chip" data-type="photo" data-model="gemini-3-pro-image-preview">AI Photo</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +69,7 @@
         </section>
 
         <footer class="glass-footer">
-            <p>Powered by Google Gemini 1.5 Flash</p>
+            <p id="footer-text">Powered by Google Gemini</p>
         </footer>
     </main>
 

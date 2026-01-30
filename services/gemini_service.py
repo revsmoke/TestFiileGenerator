@@ -29,7 +29,7 @@ def _load_prompt(file_type: str) -> str:
 
 async def generate_test_data(file_type: str, prompt: str):
     """
-    Generates structured data for a specific file type using Gemini.
+    Generates structured data or raw bytes for a specific file type using Gemini.
     """
     primary_model_name = IMAGE_MODEL if file_type in ["image", "photo"] else TEXT_MODEL
     prompt_template = _load_prompt(file_type)
@@ -42,11 +42,29 @@ async def generate_test_data(file_type: str, prompt: str):
             
             full_prompt = f"{prompt_template}\n\nUser Prompt: {prompt}"
             
-            # Add a 30s timeout to prevent indefinite stalling
+            # Add a 30s timeout
             response = model.generate_content(
                 full_prompt,
                 request_options={"timeout": 30}
             )
+            
+            # Special handling for 'photo' to return raw image bytes
+            if file_type == "photo":
+                # Check for image parts in the response
+                for candidate in response.candidates:
+                    for part in candidate.content.parts:
+                        if hasattr(part, 'inline_data') and part.inline_data:
+                            return part.inline_data.data
+                        # Some versions of the SDK might return image objects directly
+                        if hasattr(part, 'image') and part.image:
+                            # Convert PIL image or similar to bytes
+                            img_byte_arr = io.BytesIO()
+                            part.image.save(img_byte_arr, format='PNG')
+                            return img_byte_arr.getvalue()
+                
+                # If no image parts found but text was returned, maybe it's a fallback or error
+                print(f"No direct image bytes found for {file_type}, checking text content...")
+
             content = response.text.strip()
             print(f"Generation successful with {model_name}")
             

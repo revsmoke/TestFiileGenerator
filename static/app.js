@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
             chips.forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             selectedType = chip.dataset.type;
+            selectedModel = chip.dataset.model;
+            //glass-footer
+            document.getElementById('footer-text').textContent = `Powered by Google Gemini ${selectedModel}`;
         });
     });
 
