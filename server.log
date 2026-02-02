@@ -35,3 +35,15 @@ INFO:     127.0.0.1:57003 - "GET /static/app.js HTTP/1.1" 304 Not Modified
 INFO:     127.0.0.1:57004 - "GET /static/style.css HTTP/1.1" 304 Not Modified
 Attempting generation with: gemini-3-pro-image-preview for photo
 INFO:     127.0.0.1:57003 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57907 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57925 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57925 - "GET /static/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57927 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57927 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58103 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58103 - "GET /static/style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58105 - "GET /static/app.js HTTP/1.1" 304 Not Modified
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [60537]
